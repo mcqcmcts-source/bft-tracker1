@@ -148,16 +148,166 @@
         </div>
     </div>
     <script>
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDfKp7_rwvjMvdoK_h0816acG81Wg-antw",
-  authDomain: "mcts-bft-tracker.firebaseapp.com",
-  projectId: "mcts-bft-tracker",
-  storageBucket: "mcts-bft-tracker.firebasestorage.app",
-  messagingSenderId: "308904216735",
-  appId: "1:308904216735:web:4ed2ce375c1c74718ebaaa",
-  measurementId: "G-GTEQ346JMB"
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Military BFT Tracker</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- FULL CSS FROM BFT Tracker.txt START --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * {margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;}
+        input, textarea {-webkit-user-select:text;user-select:text;}
+        body {font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a2e1a 0%,#0f1b0f 50%,#1a2e1a 100%);color:#1e293b;min-height:100vh;line-height:1.6;position:relative;overflow-x:hidden;padding:0;margin:0;-webkit-overflow-scrolling:touch;}
+        body::before {content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 30%,rgba(76,175,80,0.25) 0%,transparent 60%),radial-gradient(circle at 80% 70%,rgba(34,197,94,0.2) 0%,transparent 60%),radial-gradient(circle at 50% 50%,rgba(255,215,0,0.08) 0%,transparent 70%);z-index:-1;animation:militaryPulse 4s ease-in-out infinite alternate;}
+        @keyframes militaryPulse {0%{opacity:.6;transform:scale(1);}100%{opacity:.9;transform:scale(1.02);}}
+        body::after {content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,transparent 48%,rgba(76,175,80,0.03) 49%,rgba(76,175,80,0.03) 51%,transparent 52%),linear-gradient(-45deg,transparent 48%,rgba(255,215,0,0.02) 49%,rgba(255,215,0,0.02) 51%,transparent 52%);background-size:60px 60px;z-index:-1;animation:militaryGrid 8s linear infinite;}
+        @keyframes militaryGrid {0%{transform:translate(0,0);}100%{transform:translate(60px,60px);}}
+        .mobile-container {max-width:100%;margin:0;padding:0;min-height:100vh;display:flex;flex-direction:column;}
+        .mobile-header {background:linear-gradient(135deg,rgba(15,23,42,.95) 0%,rgba(30,41,59,.95) 50%,rgba(15,23,42,.95) 100%),linear-gradient(90deg,rgba(255,215,0,.1) 0%,transparent 20%,transparent 80%,rgba(255,215,0,.1) 100%);border-bottom:4px solid #FFD700;border-top:2px solid rgba(76,175,80,.6);padding:30px 20px 25px;display:flex;align-items:center;justify-content:center;gap:20px;backdrop-filter:blur(20px);box-shadow:0 12px 40px rgba(0,0,0,.4),0 4px 12px rgba(255,215,0,.3),inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.2);position:sticky;top:0;z-index:100;position:relative;overflow:hidden;}
+        .mobile-header::before {content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,215,0,.1),transparent);animation:militaryShine 3s ease-in-out infinite;}
+        @keyframes militaryShine {0%{left:-100%;}50%{left:100%;}100%{left:100%;}}
+        .marine-logo {flex-shrink:0;position:relative;z-index:2;}
+        .marine-logo::after {content:'';position:absolute;top:-4px;left:-4px;right:-4px;bottom:-4px;border:3px solid rgba(255,215,0,.6);border-radius:50%;animation:militaryPulse 2s infinite;}
+        .marine-logo::before {content:'';position:absolute;top:-8px;left:-8px;right:-8px;bottom:-8px;border:1px solid rgba(76,175,80,.4);border-radius:50%;animation:militaryPulse 2s infinite reverse;}
+        .header-text {text-align:center;z-index:2;position:relative;}
+        .mobile-header h1 {font-size:.85rem;font-weight:800;color:#FFD700;margin-bottom:8px;text-shadow:0 0 15px rgba(255,215,0,.6),0 2px 4px rgba(0,0,0,.8),0 0 30px rgba(255,215,0,.3);letter-spacing:1.5px;text-transform:uppercase;font-family:'Inter',monospace;position:relative;}
+        .mobile-header h1::after {content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,#FFD700,transparent);box-shadow:0 0 5px rgba(255,215,0,.5);}
+        .mobile-header h2 {font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:6px;text-shadow:0 0 10px rgba(76,175,80,.4),0 3px 6px rgba(0,0,0,.6),0 0 20px rgba(255,255,255,.2);letter-spacing:1px;position:relative;}
+        .mobile-header h2::before {content:'★';position:absolute;left:-25px;top:50%;transform:translateY(-50%);color:#FFD700;font-size:1rem;text-shadow:0 0 10px rgba(255,215,0,.8);animation:starTwinkle 2s ease-in-out infinite alternate;}
+        .mobile-header h2::after {content:'★';position:absolute;right:-25px;top:50%;transform:translateY(-50%);color:#FFD700;font-size:1rem;text-shadow:0 0 10px rgba(255,215,0,.8);animation:starTwinkle 2s ease-in-out infinite alternate-reverse;}
+        @keyframes starTwinkle {0%{opacity:.6;transform:translateY(-50%) scale(1);}100%{opacity:1;transform:translateY(-50%) scale(1.1);}}
+        .mobile-header p {color:#86efac;font-size:.8rem;font-weight:600;opacity:.95;margin:0;letter-spacing:.5px;text-shadow:0 1px 2px rgba(0,0,0,.5);text-transform:uppercase;}
+        .mobile-content {flex:1;padding:15px;padding-bottom:120px;}
+        .military-footer {position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,rgba(15,23,42,.98) 0%,rgba(30,41,59,.98) 50%,rgba(15,23,42,.98) 100%),linear-gradient(90deg,rgba(255,215,0,.08) 0%,transparent 50%,rgba(255,215,0,.08) 100%);border-top:3px solid #FFD700;padding:12px 20px 8px;text-align:center;backdrop-filter:blur(20px);box-shadow:0 -8px 32px rgba(0,0,0,.4),0 -2px 8px rgba(255,215,0,.2),inset 0 1px 0 rgba(255,255,255,.1);z-index:99;position:relative;overflow:hidden;}
+        .military-footer::before {content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,215,0,.1),transparent);animation:militaryShine 4s ease-in-out infinite;}
+        .footer-content {position:relative;z-index:2;}
+        .footer-copyright {color:#86efac;font-size:.75rem;font-weight:600;margin-bottom:4px;text-shadow:0 1px 2px rgba(0,0,0,.6);letter-spacing:.3px;}
+        .footer-designer {color:#FFD700;font-size:.7rem;font-weight:700;text-shadow:0 0 8px rgba(255,215,0,.5),0 1px 2px rgba(0,0,0,.8);letter-spacing:.5px;text-transform:uppercase;}
+        .footer-designer::before {content:'⭐ ';animation:starTwinkle 2s ease-in-out infinite alternate;}
+        .footer-designer::after {content:' ⭐';animation:starTwinkle 2s ease-in-out infinite alternate-reverse;}
+        .mobile-card {background:linear-gradient(135deg,rgba(15,23,42,.45) 0%,rgba(30,41,59,.45) 100%);border:2px solid rgba(76,175,80,.3);border-radius:20px;padding:24px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,.2),0 4px 12px rgba(76,175,80,.15),inset 0 1px 0 rgba(255,255,255,.15);backdrop-filter:blur(25px);position:relative;overflow:hidden;}
+        .mobile-card::before {content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(76,175,80,.5),transparent);}
+        .mobile-card h2 {color:#4ade80;font-size:1.3rem;font-weight:700;margin-bottom:24px;text-shadow:0 0 10px rgba(76,175,80,.3);letter-spacing:.5px;display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:2px solid rgba(76,175,80,.2);}
+        .form-group {margin-bottom:20px;position:relative;}
+        .form-group label {display:block;margin-bottom:8px;color:#e2e8f0;font-weight:600;font-size:.9rem;letter-spacing:.3px;text-transform:uppercase;font-size:.8rem;}
+        .form-group input, .form-group select {width:100%;padding:16px 18px;background:linear-gradient(135deg,rgba(15,23,42,.3) 0%,rgba(30,41,59,.3) 100%);border:2px solid rgba(76,175,80,.4);border-radius:14px;color:#f1f5f9;font-family:'Inter',sans-serif;font-size:16px;font-weight:500;transition:all .3s cubic-bezier(.4,0,.2,1);-webkit-appearance:none;appearance:none;backdrop-filter:blur(15px);box-shadow:0 4px 12px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.15);}
+        .form-group input:focus, .form-group select:focus {outline:none;border-color:#4ade80;box-shadow:0 0 0 4px rgba(76,175,80,.15),0 8px 24px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);transform:translateY(-1px);}
+        .form-group input::placeholder, .form-group select::placeholder {color:#94a3b8;font-weight:400;}
+        .mobile-btn {background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);color:white;border:none;padding:16px 24px;border-radius:14px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.3px;transition:all .3s cubic-bezier(.4,0,.2,1);margin:8px 8px 8px 0;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(59,130,246,.3),0 2px 4px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2);min-height:52px;min-width:120px;position:relative;overflow:hidden;}
+        .mobile-btn::before {content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s;}
+        .mobile-btn:hover::before {left:100%;}
+        .mobile-btn:active {transform:translateY(1px) scale(.98);box-shadow:0 3px 10px rgba(59,130,246,.4),0 1px 2px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);}
+        .mobile-btn.danger {background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);box-shadow:0 6px 20px rgba(239,68,68,.3),0 2px 4px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2);}
+        .mobile-btn.success {background:linear-gradient(135deg,#10b981 0%,#059669 100%);box-shadow:0 6px 20px rgba(16,185,129,.3),0 2px 4px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.2);}
+        .mobile-btn.secondary {background:linear-gradient(135deg,rgba(76,175,80,.15) 0%,rgba(76,175,80,.25) 100%);color:#4ade80;border:2px solid rgba(76,175,80,.4);box-shadow:0 6px 20px rgba(76,175,80,.2),0 2px 4px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.1);}
+        .mobile-btn.full-width {width:100%;margin:12px 0;}
+        .mobile-btn.small {padding:10px 16px;font-size:.8rem;min-height:40px;min-width:auto;font-weight:600;}
+        /* ... rest of your CSS from BFT Tracker.txt ... */
+        @media (max-width:480px) {.mobile-header{padding:15px 10px 10px;}.mobile-header h1{font-size:.7rem;}.mobile-header h2{font-size:1.1rem;}.mobile-content{padding:10px;}.mobile-card{padding:15px;margin-bottom:10px;}.mobile-card h2{font-size:1.1rem;margin-bottom:15px;}}
+        @media (max-width:360px) {.mobile-header h1{font-size:.65rem;}.mobile-header h2{font-size:1rem;}.mobile-header p{font-size:.65rem;}}
+        @media (prefers-color-scheme:dark) {body{background:linear-gradient(135deg,#0a0f0a 0%,#050a05 50%,#0a0f0a 100%);}}
+        @supports (padding:max(0px)) {.mobile-header{padding-top:max(20px,env(safe-area-inset-top));}.mobile-content{padding-bottom:max(100px,env(safe-area-inset-bottom)+100px);}}
+        /* --- FULL CSS FROM BFT Tracker.txt END --- */
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Military Header -->
+        <div class="mobile-header">
+            <div class="marine-logo">
+                <img src="https://postimg.cc/wyPr3CnJ" alt="Marine Corps Training School Logo" width="40" height="40" style="border-radius: 50%; object-fit: cover; border: 2px solid #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);" onerror="this.style.display='none'; console.error('Logo failed to load');">
+            </div>
+            <div class="header-text">
+                <h1>MARINE CORPS TRAINING SCHOOL</h1>
+                <h2>BFT TRACKER</h2>
+                <p>Basic Fitness Test Performance Management</p>
+            </div>
+        </div>
+        <!-- Login Screen -->
+        <div id="loginScreen" class="mobile-content" style="display: flex; align-items: center; justify-content: center; min-height: 90vh;">
+            <div class="mobile-card" style="width:100%; max-width:400px; margin:auto;">
+                <h2>🔐 Access BFT Tracker</h2>
+                <div id="loginForm">
+                    <div class="form-group">
+                        <label for="loginServiceNumber">Service Number</label>
+                        <input type="text" id="loginServiceNumber" placeholder="Enter your Service Number" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+                    </div>
+                    <button class="mobile-btn success full-width" onclick="login()">🔓 Sign In</button>
+                    <div style="text-align:center; margin:20px 0; color:#86efac; font-size:0.9rem;">
+                        Don't have an account?
+                    </div>
+                    <button class="mobile-btn secondary full-width" onclick="showSignup()">📝 Create Account</button>
+                </div>
+                <div id="signupForm" style="display:none;">
+                    <div class="form-group">
+                        <label for="signupServiceNumber">Service Number</label>
+                        <input type="text" id="signupServiceNumber" placeholder="Enter your Service Number" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Create Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a secure password" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your full name" autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupRank">Rank</label>
+                        <input type="text" id="signupRank" placeholder="Enter your rank" autocomplete="organization-title">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupUnit">Unit</label>
+                        <input type="text" id="signupUnit" placeholder="Enter your unit" autocomplete="organization">
+                    </div>
+                    <button class="mobile-btn success full-width" onclick="signup()">✅ Create Account</button>
+                    <div style="text-align:center; margin:20px 0; color:#86efac; font-size:0.9rem;">
+                        Already have an account?
+                    </div>
+                    <button class="mobile-btn secondary full-width" onclick="showLogin()">🔓 Sign In</button>
+                </div>
+                <div style="margin-top:30px; padding:20px; background:rgba(15,23,42,0.3); border-radius:12px; border:1px solid rgba(76,175,80,0.3);">
+                    <h4 style="color:#4ade80; margin-bottom:12px; font-size:0.9rem;">🛡️ Security Notice</h4>
+                    <p style="color:#86efac; font-size:0.8rem; line-height:1.4; margin:0;">
+                        Your data is stored securely. Use a strong password to protect your fitness records.
+                        Your service number serves as your unique identifier.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="military-footer">
+            <div class="footer-content">
+                <div class="footer-copyright">All Rights Reserved MCTS 2025</div>
+                <div class="footer-designer">Designed By: LCPL Ahmed Nabeel</div>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Firebase config
+    const firebaseConfig = {
+        apiKey: "AIzaSyDfKp7_rwvjMvdOk_h0816acG81Wg-antw",
+        authDomain: "mcts-bft-tracker.firebaseapp.com",
+        projectId: "mcts-bft-tracker",
+        storageBucket: "mcts-bft-tracker.appspot.com",
+        messagingSenderId: "380904216735",
+        appId: "1:380904216735:web:4e2dce375c1c74718ebaaa",
+        measurementId: "G-GTEQ346JMB"
+    };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
@@ -217,6 +367,9 @@ const firebaseConfig = {
         setTimeout(()=>{toast.remove()},3000);
     }
     document.addEventListener('DOMContentLoaded', showLogin);
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
