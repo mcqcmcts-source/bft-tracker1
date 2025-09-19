@@ -4,114 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Military BFT Tracker</title>
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk1pbGl0YXJ5IEJGVCBUcmFja2VyIiwKICAic2hvcnRfbmFtZSI6ICJCRlQgVHJhY2tlciIsCiAgImRlc2NyaXB0aW9uIjogIkJhc2ljIEZpdG5lc3MgVGVzdCBQZXJmb3JtYW5jZSBNYW5hZ2VtZW50IFN5c3RlbSIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBmMWIwZiIsCiAgInRoZW1lX2NvbG9yIjogIiM0YWRlODAiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhjbVZqZENCM2FXUjBhRDBpTVRJd0lpQm9aV2xuYUhROUlqRXlNQ0lpSUdacGJHdzlJaU0wWVdSbE9EQWlMejQ4ZEdWNGRDQjRQU0kyTUNJZ2VUMGlOVEFpSUdacGJHdzlJaU0zTm1WbU9UZ2lJR1p2Ym5RdGMybDZaVDBpTWpBaUlIUmxlSFF0WVc1amFHOXlQU0p0YVdSa2JHVWlQa0pHVkR3dmRHVjRkRDQ4TDNOMlp6ND0iLAogICAgICAic2l6ZXMiOiAiMTIweDEyMCIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
-    <!-- Google Fonts for Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- Your full military-themed CSS unchanged --- */
-        /* (Paste your full style block from original, not truncated here for brevity) */
-        /* --- Example: --- */
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a2e1a 0%, #0f1b0f 50%, #1a2e1a 100%);
-            color: #1e293b;
-            min-height: 100vh;
-            line-height: 1.6;
-            position: relative;
-            overflow-x: hidden;
-            padding: 0;
-            margin: 0;
-            -webkit-overflow-scrolling: touch;
-        }
-        /* All the rest of your CSS from original file... */
-        /* ... (include all your .mobile-header, .mobile-card, form, button, etc styles) ... */
-        /* ... (do not truncate, include all!) ... */
+        /* Paste ALL your original CSS here (already in your file) */
+        /* ... (unchanged, see your Index.txt) ... */
     </style>
 </head>
 <body>
-    <div class="mobile-container">
-        <!-- --- HEADER --- -->
-        <div class="mobile-header">
-            <div class="marine-logo">
-                <img src="https://postimg.cc/wyPr3CnJ" alt="Marine Corps Training School Logo" width="40" height="40" style="border-radius: 50%; object-fit: cover; border: 2px solid #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);" onerror="this.style.display='none'; console.error('Logo failed to load');">
-            </div>
-            <div class="header-text">
-                <h1>MARINE CORPS TRAINING SCHOOL</h1>
-                <h2>BFT TRACKER</h2>
-                <p>Basic Fitness Test Performance Management</p>
-            </div>
-        </div>
-        <!-- --- AUTH SCREENS --- -->
-        <div id="loginScreen" class="mobile-content">
-            <div class="mobile-card">
-                <h2>🔐 Access BFT Tracker</h2>
-                <div id="loginForm">
-                    <div class="form-group">
-                        <label>Service Number</label>
-                        <input type="text" id="loginServiceNumber" placeholder="Enter your Service Number" autocomplete="username">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
-                    </div>
-                    <button class="mobile-btn success full-width" onclick="login()">🔓 Sign In</button>
-                    <div style="text-align: center; margin: 20px 0; color: #86efac; font-size: 0.9rem;">
-                        Don't have an account?
-                    </div>
-                    <button class="mobile-btn secondary full-width" onclick="showSignup()">📝 Create Account</button>
-                </div>
-                <div id="signupForm" style="display: none;">
-                    <div class="form-group">
-                        <label>Service Number</label>
-                        <input type="text" id="signupServiceNumber" placeholder="Enter your Service Number" autocomplete="username">
-                    </div>
-                    <div class="form-group">
-                        <label>Create Password</label>
-                        <input type="password" id="signupPassword" placeholder="Create a secure password" autocomplete="new-password">
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <input type="password" id="confirmPassword" placeholder="Confirm your password" autocomplete="new-password">
-                    </div>
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="signupName" placeholder="Enter your full name" autocomplete="name">
-                    </div>
-                    <div class="form-group">
-                        <label>Rank</label>
-                        <input type="text" id="signupRank" placeholder="Enter your rank" autocomplete="organization-title">
-                    </div>
-                    <div class="form-group">
-                        <label>Unit</label>
-                        <input type="text" id="signupUnit" placeholder="Enter your unit" autocomplete="organization">
-                    </div>
-                    <button class="mobile-btn success full-width" onclick="signup()">✅ Create Account</button>
-                    <div style="text-align: center; margin: 20px 0; color: #86efac; font-size: 0.9rem;">
-                        Already have an account?
-                    </div>
-                    <button class="mobile-btn secondary full-width" onclick="showLogin()">🔓 Sign In</button>
-                </div>
-                <!-- ... Security Notice ... -->
-            </div>
-        </div>
-        <!-- --- MAIN APP SCREEN (hidden until login) --- -->
-        <div id="mainApp" class="mobile-content" style="display: none;">
-            <!-- Paste all your original tracker UI here, unchanged -->
-            <!-- Profile section, test entry, records, etc. -->
-            <!-- ... -->
-        </div>
-    </div>
-    <!-- --- Footer, Install Prompt, etc. (as in your original file) --- -->
-    <!-- --- FIREBASE INTEGRATION LOGIC --- -->
+    <!-- Paste ALL your original HTML (unchanged) here -->
+    <!-- ... (already in your Index.txt) ... -->
+
     <script>
-    // Firebase config
+    // Initialize Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyDfKp7_rwvjMvdOk_h0816acG81Wg-antw",
         authDomain: "mcts-bft-tracker.firebaseapp.com",
@@ -125,14 +33,28 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
+    // Replace IndexedDB logic: use Firebase Auth + Firestore
+
     // --- AUTH ---
     function showLogin() {
         document.getElementById('loginForm').style.display = 'block';
         document.getElementById('signupForm').style.display = 'none';
+        clearAuthForms();
     }
     function showSignup() {
         document.getElementById('loginForm').style.display = 'none';
         document.getElementById('signupForm').style.display = 'block';
+        clearAuthForms();
+    }
+    function clearAuthForms() {
+        document.getElementById('loginServiceNumber').value = '';
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('signupServiceNumber').value = '';
+        document.getElementById('signupPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        document.getElementById('signupName').value = '';
+        document.getElementById('signupRank').value = '';
+        document.getElementById('signupUnit').value = '';
     }
     function signup() {
         const serviceNumber = document.getElementById('signupServiceNumber').value.trim();
