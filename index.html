@@ -12,15 +12,43 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
-    <!-- Your existing styles (unchanged, truncated for brevity) -->
+    <!-- Google Fonts for Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ... All your existing CSS ... */
+        /* --- Your full military-themed CSS unchanged --- */
+        /* (Paste your full style block from original, not truncated here for brevity) */
+        /* --- Example: --- */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a2e1a 0%, #0f1b0f 50%, #1a2e1a 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            padding: 0;
+            margin: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        /* All the rest of your CSS from original file... */
+        /* ... (include all your .mobile-header, .mobile-card, form, button, etc styles) ... */
+        /* ... (do not truncate, include all!) ... */
     </style>
 </head>
 <body>
     <div class="mobile-container">
-        <!-- ... Your existing HTML content ... -->
-        <!-- Login Screen -->
+        <!-- --- HEADER --- -->
+        <div class="mobile-header">
+            <div class="marine-logo">
+                <img src="https://postimg.cc/wyPr3CnJ" alt="Marine Corps Training School Logo" width="40" height="40" style="border-radius: 50%; object-fit: cover; border: 2px solid #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);" onerror="this.style.display='none'; console.error('Logo failed to load');">
+            </div>
+            <div class="header-text">
+                <h1>MARINE CORPS TRAINING SCHOOL</h1>
+                <h2>BFT TRACKER</h2>
+                <p>Basic Fitness Test Performance Management</p>
+            </div>
+        </div>
+        <!-- --- AUTH SCREENS --- -->
         <div id="loginScreen" class="mobile-content">
             <div class="mobile-card">
                 <h2>🔐 Access BFT Tracker</h2>
@@ -73,12 +101,15 @@
                 <!-- ... Security Notice ... -->
             </div>
         </div>
-        <!-- Main App Content -->
-        <!-- ... All your existing tracker UI ... -->
+        <!-- --- MAIN APP SCREEN (hidden until login) --- -->
+        <div id="mainApp" class="mobile-content" style="display: none;">
+            <!-- Paste all your original tracker UI here, unchanged -->
+            <!-- Profile section, test entry, records, etc. -->
+            <!-- ... -->
+        </div>
     </div>
-    <!-- ... Footer and other components ... -->
-
-    <!-- Firebase Integration JavaScript -->
+    <!-- --- Footer, Install Prompt, etc. (as in your original file) --- -->
+    <!-- --- FIREBASE INTEGRATION LOGIC --- -->
     <script>
     // Firebase config
     const firebaseConfig = {
@@ -94,7 +125,7 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // --- AUTH FUNCTIONS ---
+    // --- AUTH ---
     function showLogin() {
         document.getElementById('loginForm').style.display = 'block';
         document.getElementById('signupForm').style.display = 'none';
@@ -119,7 +150,6 @@
         const email = serviceNumber + '@bft.com';
         auth.createUserWithEmailAndPassword(email, password)
             .then(userCredential => {
-                // Save profile to Firestore
                 db.collection('profiles').doc(userCredential.user.uid).set({
                     serviceNumber, name, rank, unit, timestamp: Date.now()
                 });
@@ -151,13 +181,14 @@
     auth.onAuthStateChanged(function(user) {
         if (user) {
             showMainApp();
-            loadUserData(user.uid);
+            displayProfile();
+            displayRecords();
         } else {
             showLoginScreen();
         }
     });
 
-    // --- PROFILE & RECORDS FUNCTIONS ---
+    // --- PROFILE & RECORDS ---
     function saveProfile() {
         const user = auth.currentUser;
         if (!user) return;
@@ -181,7 +212,6 @@
         db.collection('profiles').doc(user.uid).get().then(doc => {
             if (doc.exists) {
                 const profile = doc.data();
-                // Populate your UI as before
                 document.getElementById('serviceNumber').value = profile.serviceNumber || '';
                 document.getElementById('rank').value = profile.rank || '';
                 document.getElementById('name').value = profile.name || '';
@@ -200,8 +230,6 @@
             }
         });
     }
-
-    // --- TEST RECORDS ---
     function addTestRecord() {
         const user = auth.currentUser;
         if (!user) return;
@@ -211,7 +239,7 @@
         const sitUps = parseInt(document.getElementById('sitUps').value);
         const runMinutes = parseInt(document.getElementById('runMinutes').value);
         const runSeconds = parseInt(document.getElementById('runSeconds').value);
-        // You may want to use your existing evaluateTest logic here
+        // For score calculations, paste your evaluateTest logic here if needed
         const record = {
             testDate, ageAtTest, pushUps, sitUps, runMinutes, runSeconds,
             timestamp: Date.now(), userUid: user.uid
@@ -232,8 +260,6 @@
                 // (Replace your IndexedDB records rendering with this array)
             });
     }
-
-    // --- SUPPORTING FUNCTIONS ---
     function showMainApp() {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
@@ -246,11 +272,9 @@
         showLogin();
     }
     function showToast(message, type='info') {
-        // ... your toast logic ...
-        alert(message); // replace with your toast UI
+        // Replace with your toast UI or use alert for now
+        alert(message);
     }
-
-    // --- PHOTO HANDLING (unchanged) ---
     function handlePhotoUpload() {
         const fileInput = document.getElementById('profilePhoto');
         const file = fileInput.files[0];
@@ -278,8 +302,6 @@
         document.getElementById('noPhotoPlaceholder').style.display = 'flex';
         document.getElementById('previewImage').src = '';
     }
-
-    // --- INIT ---
     document.addEventListener('DOMContentLoaded', function() {
         showLoginScreen();
     });
