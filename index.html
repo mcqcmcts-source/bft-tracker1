@@ -1,1 +1,2977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Military BFT Tracker</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIk1pbGl0YXJ5IEJGVCBUcmFja2VyIiwKICAic2hvcnRfbmFtZSI6ICJCRlQgVHJhY2tlciIsCiAgImRlc2NyaXB0aW9uIjogIkJhc2ljIEZpdG5lc3MgVGVzdCBQZXJmb3JtYW5jZSBNYW5hZ2VtZW50IFN5c3RlbSIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBmMWIwZiIsCiAgInRoZW1lX2NvbG9yIjogIiM0YWRlODAiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhjbVZqZENCM2FXUjBhRDBpTVRJd0lpQm9aV2xuYUhROUlqRXlNQ0lpSUdacGJHdzlJaU0wWVdSbE9EQWlMejQ4ZEdWNGRDQjRQU0kyTUNJZ2VUMGlOVEFpSUdacGJHdzlJaU0zTm1WbU9UZ2lJR1p2Ym5RdGMybDZaVDBpTWpBaUlIUmxlSFF0WVc1amFHOXlQU0p0YVdSa2JHVWlQa0pHVkR3dmRHVjRkRDQ4TDNOMlp6ND0iLAogICAgICAic2l6ZXMiOiAiMTIweDEyMCIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        input, textarea {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a2e1a 0%, #0f1b0f 50%, #1a2e1a 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            padding: 0;
+            margin: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Military Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(76, 175, 80, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(34, 197, 94, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
+            z-index: -1;
+            animation: militaryPulse 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes militaryPulse {
+            0% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            100% { 
+                opacity: 0.9;
+                transform: scale(1.02);
+            }
+        }
+        
+        /* Additional animated background elements */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(76, 175, 80, 0.03) 49%, rgba(76, 175, 80, 0.03) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255, 215, 0, 0.02) 49%, rgba(255, 215, 0, 0.02) 51%, transparent 52%);
+            background-size: 60px 60px;
+            z-index: -1;
+            animation: militaryGrid 8s linear infinite;
+        }
+        
+        @keyframes militaryGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+        
+        /* Mobile App Container */
+        .mobile-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Military Header */
+        .mobile-header {
+            background: 
+                linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.95) 100%),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, transparent 20%, transparent 80%, rgba(255, 215, 0, 0.1) 100%);
+            border-bottom: 4px solid #FFD700;
+            border-top: 2px solid rgba(76, 175, 80, 0.6);
+            padding: 30px 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.4), 
+                0 4px 12px rgba(255, 215, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mobile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: militaryShine 3s ease-in-out infinite;
+        }
+        
+        @keyframes militaryShine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+        
+        .marine-logo {
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .marine-logo::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 3px solid rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            animation: militaryPulse 2s infinite;
+        }
+        
+        .marine-logo::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border: 1px solid rgba(76, 175, 80, 0.4);
+            border-radius: 50%;
+            animation: militaryPulse 2s infinite reverse;
+        }
+        
+        @keyframes militaryPulse {
+            0%, 100% { 
+                opacity: 0.4; 
+                transform: scale(1); 
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                opacity: 0.8; 
+                transform: scale(1.08); 
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+        }
+        
+        .header-text {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .mobile-header h1 {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #FFD700;
+            margin-bottom: 8px;
+            text-shadow: 
+                0 0 15px rgba(255, 215, 0, 0.6),
+                0 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(255, 215, 0, 0.3);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-family: 'Inter', monospace;
+            position: relative;
+        }
+        
+        .mobile-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        .mobile-header h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+            text-shadow: 
+                0 0 10px rgba(76, 175, 80, 0.4),
+                0 3px 6px rgba(0, 0, 0, 0.6),
+                0 0 20px rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .mobile-header h2::before {
+            content: '★';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FFD700;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: starTwinkle 2s ease-in-out infinite alternate;
+        }
+        
+        .mobile-header h2::after {
+            content: '★';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FFD700;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: starTwinkle 2s ease-in-out infinite alternate-reverse;
+        }
+        
+        @keyframes starTwinkle {
+            0% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+            100% { opacity: 1; transform: translateY(-50%) scale(1.1); }
+        }
+        
+        .mobile-header p {
+            color: #86efac;
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0.95;
+            margin: 0;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+        }
+        
+
+        
+        /* Mobile Content */
+        .mobile-content {
+            flex: 1;
+            padding: 15px;
+            padding-bottom: 120px;
+        }
+        
+        /* Military Footer */
+        .military-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: 
+                linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.98) 50%, rgba(15, 23, 42, 0.98) 100%),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, transparent 50%, rgba(255, 215, 0, 0.08) 100%);
+            border-top: 3px solid #FFD700;
+            padding: 12px 20px 8px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 -8px 32px rgba(0, 0, 0, 0.4),
+                0 -2px 8px rgba(255, 215, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            z-index: 99;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .military-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: militaryShine 4s ease-in-out infinite;
+        }
+        
+        .footer-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .footer-copyright {
+            color: #86efac;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+            letter-spacing: 0.3px;
+        }
+        
+        .footer-designer {
+            color: #FFD700;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-shadow: 
+                0 0 8px rgba(255, 215, 0, 0.5),
+                0 1px 2px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .footer-designer::before {
+            content: '⭐ ';
+            animation: starTwinkle 2s ease-in-out infinite alternate;
+        }
+        
+        .footer-designer::after {
+            content: ' ⭐';
+            animation: starTwinkle 2s ease-in-out infinite alternate-reverse;
+        }
+        
+
+        
+        /* Mobile Cards */
+        .mobile-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.45) 0%, rgba(30, 41, 59, 0.45) 100%);
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.2),
+                0 4px 12px rgba(76, 175, 80, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mobile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.5), transparent);
+        }
+        
+        .mobile-card h2 {
+            color: #4ade80;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(76, 175, 80, 0.2);
+        }
+        
+        /* Mobile Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 16px 18px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.3) 0%, rgba(30, 41, 59, 0.3) 100%);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 14px;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px; /* Prevents zoom on iOS */
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-appearance: none;
+            appearance: none;
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 
+                0 0 0 4px rgba(76, 175, 80, 0.15),
+                0 8px 24px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .form-group input::placeholder, .form-group select::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        
+        /* Mobile Buttons */
+        .mobile-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 8px 8px 8px 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 
+                0 6px 20px rgba(59, 130, 246, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            min-height: 52px;
+            min-width: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mobile-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .mobile-btn:hover::before {
+            left: 100%;
+        }
+        
+        .mobile-btn:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 
+                0 3px 10px rgba(59, 130, 246, 0.4),
+                0 1px 2px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-btn.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 
+                0 6px 20px rgba(239, 68, 68, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .mobile-btn.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 
+                0 6px 20px rgba(16, 185, 129, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .mobile-btn.secondary {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.25) 100%);
+            color: #4ade80;
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            box-shadow: 
+                0 6px 20px rgba(76, 175, 80, 0.2),
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-btn.full-width {
+            width: 100%;
+            margin: 12px 0;
+        }
+        
+        .mobile-btn.small {
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            min-height: 40px;
+            min-width: auto;
+            font-weight: 600;
+        }
+        
+        /* Profile Photo Section */
+        .profile-photo-section {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.25) 0%, rgba(30, 41, 59, 0.25) 100%);
+            border-radius: 16px;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+        
+        .profile-photo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.4), transparent);
+        }
+        
+        .photo-preview {
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .photo-preview img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #4ade80;
+            box-shadow: 
+                0 0 20px rgba(76, 175, 80, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .photo-preview img:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 25px rgba(76, 175, 80, 0.6),
+                0 12px 24px rgba(0, 0, 0, 0.4);
+        }
+        
+        .photo-placeholder {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.2) 100%);
+            border: 3px dashed rgba(76, 175, 80, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: #86efac;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .photo-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Time Input */
+        .time-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .time-input input {
+            flex: 1;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .time-separator {
+            color: #4ade80;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+        
+        /* Calculator Display */
+        .calculator-display {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.3) 0%, rgba(30, 41, 59, 0.3) 100%);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 0;
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculator-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.5), transparent);
+        }
+        
+        .score-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .score-item {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.25) 100%);
+            padding: 16px 12px;
+            border-radius: 12px;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #d1fae5;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 4px 12px rgba(16, 185, 129, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .score-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+        
+        .score-item.fail {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.3) 100%);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #fecaca;
+            box-shadow: 
+                0 4px 12px rgba(239, 68, 68, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .score-item.merit {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.3) 100%);
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fef3c7;
+            box-shadow: 
+                0 4px 12px rgba(245, 158, 11, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .score-item.no-entry {
+            background: linear-gradient(135deg, rgba(100, 116, 139, 0.15) 0%, rgba(100, 116, 139, 0.25) 100%);
+            border-color: rgba(100, 116, 139, 0.3);
+            color: #cbd5e1;
+            box-shadow: 
+                0 4px 12px rgba(100, 116, 139, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Test Records */
+        .test-record {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.35) 0%, rgba(30, 41, 59, 0.35) 100%);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .test-record::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.4), transparent);
+        }
+        
+        .test-record:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .test-record.pass {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(16, 185, 129, 0.1) 50%, rgba(30, 41, 59, 0.95) 100%);
+        }
+        
+        .test-record.pass::before {
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
+        }
+        
+        .test-record.fail {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(239, 68, 68, 0.1) 50%, rgba(30, 41, 59, 0.95) 100%);
+        }
+        
+        .test-record.fail::before {
+            background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.5), transparent);
+        }
+        
+        .test-record.merit {
+            border-color: rgba(245, 158, 11, 0.5);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(245, 158, 11, 0.1) 50%, rgba(30, 41, 59, 0.95) 100%);
+        }
+        
+        .test-record.merit::before {
+            background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.5), transparent);
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-badge.pass {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .status-badge.fail {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .status-badge.merit {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 10px rgba(245, 158, 11, 0.5); }
+            to { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(245, 158, 11, 0.8); }
+        }
+        
+        .test-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        
+        .test-detail {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #10b981;
+            color: #86efac;
+            font-size: 0.75rem;
+        }
+        
+        .test-detail.fail-event {
+            background: rgba(239, 68, 68, 0.2);
+            border-left-color: #ef4444;
+            color: #fecaca;
+        }
+        
+        /* Profile Display */
+        .profile-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            position: relative;
+        }
+        
+        .profile-photo-display {
+            order: 2;
+            flex-shrink: 0;
+        }
+        
+        .profile-photo-display img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 3px solid #4ade80;
+            box-shadow: 
+                0 0 15px rgba(76, 175, 80, 0.4),
+                0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-photo-display img:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 20px rgba(76, 175, 80, 0.6),
+                0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+        
+        .profile-details {
+            flex: 1;
+            color: #86efac;
+            font-size: 0.8rem;
+            order: 1;
+            min-width: 0;
+        }
+        
+        /* Year Summary */
+        .year-summary {
+            background: linear-gradient(135deg, rgba(15, 23, 15, 0.95) 0%, rgba(26, 46, 26, 0.95) 100%);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .year-summary h3 {
+            color: #4ade80;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #86efac;
+            font-size: 0.7rem;
+        }
+        
+        /* Filters */
+        .filters {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filters select {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        /* Requirements */
+        .requirements {
+            background: rgba(15, 23, 15, 0.8);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        
+        .req-section {
+            margin-bottom: 12px;
+        }
+        
+        .req-section h4 {
+            color: #86efac;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        
+        .req-grid {
+            display: grid;
+            gap: 6px;
+        }
+        
+        .req-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            border-left: 2px solid rgba(76, 175, 80, 0.4);
+            color: #d1fae5;
+        }
+        
+        /* Loading States */
+        .loading {
+            text-align: center;
+            padding: 30px 15px;
+            color: #86efac;
+        }
+        
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-top: 2px solid #4ade80;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 30px 15px;
+            color: #86efac;
+        }
+        
+        .empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        
+        /* Offline Indicator */
+        .offline-indicator {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+        
+        /* Install Prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .install-prompt-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .install-prompt-text {
+            flex: 1;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .install-prompt-buttons {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .install-prompt button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .install-prompt .install-btn {
+            background: white;
+            color: #10b981;
+        }
+        
+        .install-prompt .dismiss-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 480px) {
+            .mobile-header {
+                padding: 15px 10px 10px;
+            }
+            
+            .mobile-header h1 {
+                font-size: 0.7rem;
+            }
+            
+            .mobile-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-content {
+                padding: 10px;
+            }
+            
+            .mobile-card {
+                padding: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .mobile-card h2 {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+            
+
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 360px) {
+            .mobile-header h1 {
+                font-size: 0.65rem;
+            }
+            
+            .mobile-header h2 {
+                font-size: 1rem;
+            }
+            
+            .mobile-header p {
+                font-size: 0.65rem;
+            }
+            
+
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #0a0f0a 0%, #050a05 50%, #0a0f0a 100%);
+            }
+        }
+        
+        /* Safe area support for notched devices */
+        @supports (padding: max(0px)) {
+            .mobile-header {
+                padding-top: max(20px, env(safe-area-inset-top));
+            }
+            
+            .mobile-content {
+                padding-bottom: max(100px, env(safe-area-inset-bottom) + 100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div class="marine-logo">
+                <img src="https://postimg.cc/wyPr3CnJ" alt="Marine Corps Training School Logo" width="40" height="40" style="border-radius: 50%; object-fit: cover; border: 2px solid #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);" onerror="this.style.display='none'; console.error('Logo failed to load');">
+            </div>
+            <div class="header-text">
+                <h1>MARINE CORPS TRAINING SCHOOL</h1>
+                <h2>BFT TRACKER</h2>
+                <p>Basic Fitness Test Performance Management</p>
+            </div>
+        </div>
+        
+        <!-- Login Screen -->
+        <div id="loginScreen" class="mobile-content">
+            <div class="mobile-card">
+                <h2>🔐 Access BFT Tracker</h2>
+                
+                <div id="loginForm">
+                    <div class="form-group">
+                        <label>Service Number</label>
+                        <input type="text" id="loginServiceNumber" placeholder="Enter your Service Number" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+                    </div>
+                    <button class="mobile-btn success full-width" onclick="login()">🔓 Sign In</button>
+                    
+                    <div style="text-align: center; margin: 20px 0; color: #86efac; font-size: 0.9rem;">
+                        Don't have an account?
+                    </div>
+                    
+                    <button class="mobile-btn secondary full-width" onclick="showSignup()">📝 Create Account</button>
+                </div>
+                
+                <div id="signupForm" style="display: none;">
+                    <div class="form-group">
+                        <label>Service Number</label>
+                        <input type="text" id="signupServiceNumber" placeholder="Enter your Service Number" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label>Create Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a secure password" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your full name" autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label>Rank</label>
+                        <input type="text" id="signupRank" placeholder="Enter your rank" autocomplete="organization-title">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <input type="text" id="signupUnit" placeholder="Enter your unit" autocomplete="organization">
+                    </div>
+                    
+                    <button class="mobile-btn success full-width" onclick="signup()">✅ Create Account</button>
+                    
+                    <div style="text-align: center; margin: 20px 0; color: #86efac; font-size: 0.9rem;">
+                        Already have an account?
+                    </div>
+                    
+                    <button class="mobile-btn secondary full-width" onclick="showLogin()">🔓 Sign In</button>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: rgba(15, 23, 42, 0.3); border-radius: 12px; border: 1px solid rgba(76, 175, 80, 0.3);">
+                    <h4 style="color: #4ade80; margin-bottom: 12px; font-size: 0.9rem;">🛡️ Security Notice</h4>
+                    <p style="color: #86efac; font-size: 0.8rem; line-height: 1.4; margin: 0;">
+                        Your data is stored securely in your device's database. Use a strong password to protect your fitness records. 
+                        Your service number serves as your unique identifier.
+                    </p>
+                    <div id="dbStatus" style="margin-top: 10px; padding: 8px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.75rem; color: #10b981;">
+                        🗄️ Database: Initializing...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Content -->
+        <div id="mainApp" class="mobile-content" style="display: none;">
+            <!-- Profile Section -->
+            <div class="mobile-card">
+                <h2>👤 Your Profile</h2>
+                
+                <!-- Profile Photo Section -->
+                <div class="profile-photo-section">
+                    <div id="photoPreview" class="photo-preview" style="display: none;">
+                        <img id="previewImage">
+                        <button class="mobile-btn danger small" onclick="removePhoto()">Remove</button>
+                    </div>
+                    <div id="noPhotoPlaceholder" class="photo-placeholder">
+                        👤
+                    </div>
+                    <label for="profilePhoto" class="mobile-btn secondary small">
+                        📷 Add Photo
+                    </label>
+                    <input type="file" id="profilePhoto" accept="image/*" onchange="handlePhotoUpload()" style="display: none;">
+                </div>
+                
+                <div id="profileForm">
+                    <div class="form-group">
+                        <label>Service Number</label>
+                        <input type="text" id="serviceNumber" placeholder="Enter SN">
+                    </div>
+                    <div class="form-group">
+                        <label>Rank</label>
+                        <input type="text" id="rank" placeholder="Enter Rank">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="name" placeholder="Enter Full Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit</label>
+                        <input type="text" id="unit" placeholder="Enter Unit">
+                    </div>
+                    <button class="mobile-btn success full-width" onclick="saveProfile()">💾 Save Profile</button>
+                </div>
+                
+                <div id="profileDisplay" class="profile-display" style="display: none;">
+                    <h3 style="color: #4ade80; margin-bottom: 10px; font-size: 1rem;">Current Profile</h3>
+                    <div class="profile-info">
+                        <div id="profilePhotoDisplay" class="profile-photo-display" style="display: none;">
+                            <img id="displayPhoto">
+                        </div>
+                        <div id="profileDetails" class="profile-details"></div>
+                    </div>
+                    <button class="mobile-btn secondary" onclick="editProfile()" id="editProfileBtn">✏️ Edit</button>
+                </div>
+                
+                <button class="mobile-btn danger full-width" onclick="clearProfile()">🗑️ Clear Profile</button>
+                
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(76, 175, 80, 0.2);">
+                    <button class="mobile-btn secondary full-width" onclick="logout()">🚪 Sign Out</button>
+                </div>
+            </div>
+            
+            <!-- Test Entry Section -->
+            <div class="mobile-card">
+                <h2>📊 New BFT Test</h2>
+                
+                <div class="form-group">
+                    <label>Test Date</label>
+                    <input type="date" id="testDate">
+                </div>
+                
+                <div class="form-group">
+                    <label>Age at Test</label>
+                    <input type="number" id="ageAtTest" min="17" max="65" placeholder="Enter age" oninput="updateCalculations()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Push-ups Count</label>
+                    <input type="number" id="pushUps" min="0" max="150" placeholder="Number of push-ups" oninput="updateCalculations()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Sit-ups Count</label>
+                    <input type="number" id="sitUps" min="0" max="150" placeholder="Number of sit-ups" oninput="updateCalculations()">
+                </div>
+                
+                <div class="form-group">
+                    <label>Running Time</label>
+                    <div class="time-input">
+                        <input type="number" id="runMinutes" min="0" max="30" placeholder="MM" oninput="updateCalculations()">
+                        <span class="time-separator">:</span>
+                        <input type="number" id="runSeconds" min="0" max="59" placeholder="SS" oninput="updateCalculations()">
+                    </div>
+                </div>
+                
+                <!-- Live Calculator -->
+                <div id="calculatorDisplay" class="calculator-display" style="display: none;">
+                    <h3 style="color: #4ade80; margin-bottom: 12px; font-size: 1rem;">📋 Live Score</h3>
+                    <div id="currentScores" class="score-grid"></div>
+                    <div id="requirements" class="requirements"></div>
+                </div>
+                
+                <button class="mobile-btn success full-width" onclick="addTestRecord()">✅ Add Test Record</button>
+            </div>
+            
+            <!-- Records Section -->
+            <div class="mobile-card">
+                <h2>📈 Test Records</h2>
+                
+                <div class="filters">
+                    <select id="yearFilter" onchange="filterRecords()">
+                        <option value="">All Years</option>
+                    </select>
+                    <button class="mobile-btn danger small" onclick="clearAllRecords()">Clear All</button>
+                    <button class="mobile-btn secondary small" onclick="exportData()">📤 Export</button>
+                </div>
+                
+                <div id="recordsContainer">
+                    <div class="loading">Loading records...</div>
+                </div>
+            </div>
+            
+
+            
+
+        </div>
+    </div>
+    
+    <!-- Military Footer -->
+    <div class="military-footer">
+        <div class="footer-content">
+            <div class="footer-copyright">All Rights Reserved MCTS 2025</div>
+            <div class="footer-designer">Designed By: LCPL Ahmed Nabeel</div>
+        </div>
+    </div>
+    
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt" style="display: none;">
+        <div class="install-prompt-content">
+            <div class="install-prompt-text">
+                <strong>Install BFT Tracker</strong><br>
+                Get quick access and offline support
+            </div>
+            <div class="install-prompt-buttons">
+                <button class="install-btn" onclick="installApp()">Install</button>
+                <button class="dismiss-btn" onclick="dismissInstallPrompt()">Later</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // BFT Standards by age category
+        const BFT_STANDARDS = {
+            '17-21': { pushUps: { min: 42, max: 82 }, sitUps: { min: 52, max: 92 }, run: { pass: 900, max: 714 } },
+            '22-26': { pushUps: { min: 40, max: 80 }, sitUps: { min: 47, max: 87 }, run: { pass: 942, max: 756 } },
+            '27-31': { pushUps: { min: 38, max: 78 }, sitUps: { min: 42, max: 82 }, run: { pass: 984, max: 798 } },
+            '32-36': { pushUps: { min: 33, max: 73 }, sitUps: { min: 38, max: 78 }, run: { pass: 1026, max: 840 } },
+            '37-41': { pushUps: { min: 32, max: 72 }, sitUps: { min: 33, max: 73 }, run: { pass: 1068, max: 882 } },
+            '42-46': { pushUps: { min: 26, max: 66 }, sitUps: { min: 29, max: 69 }, run: { pass: 1146, max: 906 } },
+            '47-51': { pushUps: { min: 22, max: 62 }, sitUps: { min: 27, max: 67 }, run: { pass: 1176, max: 936 } },
+            '52+': { pushUps: { min: 16, max: 56 }, sitUps: { min: 26, max: 66 }, run: { pass: 1206, max: 960 } }
+        };
+
+        // Mobile App State
+        let deferredPrompt;
+        let currentUser = null;
+        let db = null;
+
+        // Database Management
+        class BFTDatabase {
+            constructor() {
+                this.dbName = 'BFTTrackerDB';
+                this.version = 1;
+                this.db = null;
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.version);
+                    
+                    request.onerror = () => {
+                        console.error('Database failed to open');
+                        reject(request.error);
+                    };
+                    
+                    request.onsuccess = () => {
+                        this.db = request.result;
+                        console.log('Database opened successfully');
+                        resolve(this.db);
+                    };
+                    
+                    request.onupgradeneeded = (e) => {
+                        this.db = e.target.result;
+                        console.log('Database upgrade needed');
+                        
+                        // Create users store
+                        if (!this.db.objectStoreNames.contains('users')) {
+                            const usersStore = this.db.createObjectStore('users', { keyPath: 'serviceNumber' });
+                            usersStore.createIndex('serviceNumber', 'serviceNumber', { unique: true });
+                            console.log('Users store created');
+                        }
+                        
+                        // Create profiles store
+                        if (!this.db.objectStoreNames.contains('profiles')) {
+                            const profilesStore = this.db.createObjectStore('profiles', { keyPath: 'serviceNumber' });
+                            profilesStore.createIndex('serviceNumber', 'serviceNumber', { unique: true });
+                            console.log('Profiles store created');
+                        }
+                        
+                        // Create records store
+                        if (!this.db.objectStoreNames.contains('records')) {
+                            const recordsStore = this.db.createObjectStore('records', { keyPath: 'id', autoIncrement: true });
+                            recordsStore.createIndex('serviceNumber', 'serviceNumber', { unique: false });
+                            recordsStore.createIndex('date', 'date', { unique: false });
+                            recordsStore.createIndex('year', 'year', { unique: false });
+                            console.log('Records store created');
+                        }
+                    };
+                });
+            }
+
+            async saveUser(userData) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['users'], 'readwrite');
+                    const store = transaction.objectStore('users');
+                    const request = store.put(userData);
+                    
+                    request.onsuccess = () => {
+                        console.log('User saved successfully');
+                        resolve(request.result);
+                    };
+                    
+                    request.onerror = () => {
+                        console.error('Error saving user');
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async getUser(serviceNumber) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['users'], 'readonly');
+                    const store = transaction.objectStore('users');
+                    const request = store.get(serviceNumber);
+                    
+                    request.onsuccess = () => {
+                        resolve(request.result);
+                    };
+                    
+                    request.onerror = () => {
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async saveProfile(profileData) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['profiles'], 'readwrite');
+                    const store = transaction.objectStore('profiles');
+                    const request = store.put(profileData);
+                    
+                    request.onsuccess = () => {
+                        console.log('Profile saved successfully');
+                        resolve(request.result);
+                    };
+                    
+                    request.onerror = () => {
+                        console.error('Error saving profile');
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async getProfile(serviceNumber) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['profiles'], 'readonly');
+                    const store = transaction.objectStore('profiles');
+                    const request = store.get(serviceNumber);
+                    
+                    request.onsuccess = () => {
+                        resolve(request.result);
+                    };
+                    
+                    request.onerror = () => {
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async deleteProfile(serviceNumber) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['profiles'], 'readwrite');
+                    const store = transaction.objectStore('profiles');
+                    const request = store.delete(serviceNumber);
+                    
+                    request.onsuccess = () => {
+                        console.log('Profile deleted successfully');
+                        resolve(request.result);
+                    };
+                    
+                    request.onerror = () => {
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async saveRecord(recordData) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['records'], 'readwrite');
+                    const store = transaction.objectStore('records');
+                    const request = store.add(recordData);
+                    
+                    request.onsuccess = () => {
+                        console.log('Record saved successfully');
+                        resolve(request.result);
+                    };
+                    
+                    request.onerror = () => {
+                        console.error('Error saving record');
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async getRecords(serviceNumber) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['records'], 'readonly');
+                    const store = transaction.objectStore('records');
+                    const index = store.index('serviceNumber');
+                    const request = index.getAll(serviceNumber);
+                    
+                    request.onsuccess = () => {
+                        resolve(request.result || []);
+                    };
+                    
+                    request.onerror = () => {
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async deleteRecord(recordId) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['records'], 'readwrite');
+                    const store = transaction.objectStore('records');
+                    const request = store.delete(recordId);
+                    
+                    request.onsuccess = () => {
+                        console.log('Record deleted successfully');
+                        resolve(request.result);
+                    };
+                    
+                    request.onerror = () => {
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async deleteAllRecords(serviceNumber) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['records'], 'readwrite');
+                    const store = transaction.objectStore('records');
+                    const index = store.index('serviceNumber');
+                    const request = index.openCursor(serviceNumber);
+                    
+                    request.onsuccess = (event) => {
+                        const cursor = event.target.result;
+                        if (cursor) {
+                            cursor.delete();
+                            cursor.continue();
+                        } else {
+                            console.log('All records deleted successfully');
+                            resolve();
+                        }
+                    };
+                    
+                    request.onerror = () => {
+                        reject(request.error);
+                    };
+                });
+            }
+
+            async clearAllData() {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['users', 'profiles', 'records'], 'readwrite');
+                    
+                    const usersStore = transaction.objectStore('users');
+                    const profilesStore = transaction.objectStore('profiles');
+                    const recordsStore = transaction.objectStore('records');
+                    
+                    Promise.all([
+                        new Promise(res => {
+                            const req = usersStore.clear();
+                            req.onsuccess = () => res();
+                        }),
+                        new Promise(res => {
+                            const req = profilesStore.clear();
+                            req.onsuccess = () => res();
+                        }),
+                        new Promise(res => {
+                            const req = recordsStore.clear();
+                            req.onsuccess = () => res();
+                        })
+                    ]).then(() => {
+                        console.log('All data cleared successfully');
+                        resolve();
+                    }).catch(reject);
+                });
+            }
+        }
+
+        // Initialize database
+        const database = new BFTDatabase();
+
+
+
+        // Utility Functions
+        function getAgeCategory(age) {
+            if (age <= 21) return '17-21';
+            if (age <= 26) return '22-26';
+            if (age <= 31) return '27-31';
+            if (age <= 36) return '32-36';
+            if (age <= 41) return '37-41';
+            if (age <= 46) return '42-46';
+            if (age <= 51) return '47-51';
+            return '52+';
+        }
+
+        function timeToSeconds(minutes, seconds) {
+            return parseInt(minutes) * 60 + parseInt(seconds);
+        }
+
+        function secondsToTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function calculateScore(value, min, max, isRunning = false) {
+            if (isRunning) {
+                if (value <= max) {
+                    const bonusSeconds = max - value;
+                    const bonusPoints = Math.floor(bonusSeconds / 6);
+                    return 100 + bonusPoints;
+                }
+                if (value >= min) return 60;
+                return Math.max(0, 60 - ((value - min) / (min - max)) * 40);
+            } else {
+                if (value >= max) {
+                    const bonusReps = value - max;
+                    return 100 + bonusReps;
+                }
+                if (value <= min) return 60;
+                return 60 + ((value - min) / (max - min)) * 40;
+            }
+        }
+
+        function evaluateTest(age, pushUps, sitUps, runTime) {
+            const category = getAgeCategory(age);
+            const standards = BFT_STANDARDS[category];
+            
+            const pushUpScore = calculateScore(pushUps, standards.pushUps.min, standards.pushUps.max);
+            const sitUpScore = calculateScore(sitUps, standards.sitUps.min, standards.sitUps.max);
+            const runScore = calculateScore(runTime, standards.run.pass, standards.run.max, true);
+            
+            const pushUpPass = pushUps >= standards.pushUps.min;
+            const sitUpPass = sitUps >= standards.sitUps.min;
+            const runPass = runTime <= standards.run.pass;
+            
+            const overallPass = pushUpPass && sitUpPass && runPass;
+            const meritEligible = pushUps >= standards.pushUps.max && sitUps >= standards.sitUps.max && runTime <= standards.run.max;
+            
+            return {
+                category,
+                scores: { pushUps: Math.round(pushUpScore), sitUps: Math.round(sitUpScore), run: Math.round(runScore) },
+                passes: { pushUps: pushUpPass, sitUps: sitUpPass, run: runPass },
+                overallPass,
+                meritEligible,
+                totalScore: Math.round(pushUpScore + sitUpScore + runScore)
+            };
+        }
+
+        // Authentication Functions
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+            clearAuthForms();
+        }
+
+        function showSignup() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+            clearAuthForms();
+        }
+
+        function clearAuthForms() {
+            // Clear login form
+            document.getElementById('loginServiceNumber').value = '';
+            document.getElementById('loginPassword').value = '';
+            
+            // Clear signup form
+            document.getElementById('signupServiceNumber').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupRank').value = '';
+            document.getElementById('signupUnit').value = '';
+        }
+
+        function hashPassword(password) {
+            // Simple hash function for demo purposes
+            // In production, use proper encryption
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return hash.toString();
+        }
+
+        async function signup() {
+            const serviceNumber = document.getElementById('signupServiceNumber').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const name = document.getElementById('signupName').value.trim();
+            const rank = document.getElementById('signupRank').value.trim();
+            const unit = document.getElementById('signupUnit').value.trim();
+
+            // Validation
+            if (!serviceNumber || !password || !confirmPassword || !name) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (serviceNumber.length < 4) {
+                showToast('Service number must be at least 4 characters', 'error');
+                return;
+            }
+
+            if (password.length < 4) {
+                showToast('Password must be at least 4 characters', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+
+            try {
+                // Check if user already exists
+                const existingUser = await database.getUser(serviceNumber);
+                if (existingUser) {
+                    showToast('Account with this service number already exists', 'error');
+                    return;
+                }
+
+                // Create new user
+                const hashedPassword = hashPassword(password);
+                const newUser = {
+                    serviceNumber,
+                    password: hashedPassword,
+                    name,
+                    rank,
+                    unit,
+                    createdAt: Date.now(),
+                    lastLogin: Date.now()
+                };
+
+                await database.saveUser(newUser);
+
+                // Auto-login after signup
+                currentUser = newUser;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                // Create initial profile
+                const profile = {
+                    serviceNumber,
+                    rank,
+                    name,
+                    unit,
+                    timestamp: Date.now()
+                };
+                await database.saveProfile(profile);
+
+                // Immediately cache data for offline access
+                await cacheUserDataForOffline();
+
+                showToast('Account created successfully! All data will be available offline.', 'success');
+                
+                // Clear forms and show main app
+                clearAuthForms();
+                showMainApp();
+            } catch (error) {
+                console.error('Signup error:', error);
+                showToast('Error creating account. Please try again.', 'error');
+            }
+        }
+
+        async function login() {
+            const serviceNumber = document.getElementById('loginServiceNumber').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!serviceNumber || !password) {
+                showToast('Please enter both service number and password', 'error');
+                return;
+            }
+
+            try {
+                const user = await database.getUser(serviceNumber);
+
+                if (!user) {
+                    showToast('Account not found. Please create an account first.', 'error');
+                    return;
+                }
+
+                const hashedPassword = hashPassword(password);
+                if (user.password !== hashedPassword) {
+                    showToast('Incorrect password', 'error');
+                    return;
+                }
+
+                // Update last login
+                user.lastLogin = Date.now();
+                await database.saveUser(user);
+
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                // Cache data immediately for offline access
+                setTimeout(async () => {
+                    await cacheUserDataForOffline();
+                }, 500);
+
+                showToast('Welcome back! Your data is now available offline.', 'success');
+                
+                // Clear forms and show main app
+                clearAuthForms();
+                showMainApp();
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('Error logging in. Please try again.', 'error');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                try {
+                    // Clear current user data
+                    currentUser = null;
+                    localStorage.removeItem('currentUser');
+                    
+                    // Clear session data
+                    sessionStorage.clear();
+                    
+                    // Reset all form fields
+                    document.getElementById('serviceNumber').value = '';
+                    document.getElementById('rank').value = '';
+                    document.getElementById('name').value = '';
+                    document.getElementById('unit').value = '';
+                    document.getElementById('testDate').value = '';
+                    document.getElementById('ageAtTest').value = '';
+                    document.getElementById('pushUps').value = '';
+                    document.getElementById('sitUps').value = '';
+                    document.getElementById('runMinutes').value = '';
+                    document.getElementById('runSeconds').value = '';
+                    
+                    // Clear photo displays
+                    document.getElementById('photoPreview').style.display = 'none';
+                    document.getElementById('noPhotoPlaceholder').style.display = 'flex';
+                    document.getElementById('profilePhoto').value = '';
+                    document.getElementById('previewImage').src = '';
+                    document.getElementById('profilePhotoDisplay').style.display = 'none';
+                    
+                    // Hide calculator display
+                    document.getElementById('calculatorDisplay').style.display = 'none';
+                    
+                    // Clear records container
+                    document.getElementById('recordsContainer').innerHTML = '<div class="loading">Loading records...</div>';
+                    
+                    // Show login screen
+                    showLoginScreen();
+                    showToast('Signed out successfully', 'success');
+                    
+                    console.log('✅ User signed out successfully');
+                } catch (error) {
+                    console.error('❌ Error during logout:', error);
+                    showToast('Error signing out. Please refresh the page.', 'error');
+                }
+            }
+        }
+
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('mainApp').style.display = 'none';
+            showLogin();
+        }
+
+        function showMainApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            loadUserData();
+        }
+
+        function checkAuthentication() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainApp();
+                return true;
+            } else {
+                showLoginScreen();
+                return false;
+            }
+        }
+
+        async function loadUserData() {
+            if (!currentUser) return;
+            
+            try {
+                // Load user-specific data with offline support
+                await displayProfile();
+                await displayRecords();
+                await updateYearFilter();
+                await updateAppStats();
+                
+                // Cache data for offline access
+                await cacheUserDataForOffline();
+                
+                console.log('✅ User data loaded successfully');
+            } catch (error) {
+                console.error('❌ Error loading user data:', error);
+                // Try to load from offline cache
+                await loadOfflineData();
+            }
+        }
+        
+        // Enhanced offline data caching
+        async function cacheUserDataForOffline() {
+            if (!currentUser) return;
+            
+            try {
+                const profile = await database.getProfile(currentUser.serviceNumber);
+                const records = await database.getRecords(currentUser.serviceNumber);
+                
+                const offlineData = {
+                    user: currentUser,
+                    profile: profile,
+                    records: records,
+                    lastSync: Date.now(),
+                    version: '1.0'
+                };
+                
+                // Store in localStorage as backup
+                localStorage.setItem(`offlineData_${currentUser.serviceNumber}`, JSON.stringify(offlineData));
+                
+                // Also store in sessionStorage for current session
+                sessionStorage.setItem('currentUserData', JSON.stringify(offlineData));
+                
+                console.log('📱 Data cached for offline access');
+            } catch (error) {
+                console.error('❌ Error caching offline data:', error);
+            }
+        }
+        
+        // Load data from offline cache
+        async function loadOfflineData() {
+            if (!currentUser) return;
+            
+            try {
+                const offlineDataStr = localStorage.getItem(`offlineData_${currentUser.serviceNumber}`) || 
+                                     sessionStorage.getItem('currentUserData');
+                
+                if (offlineDataStr) {
+                    const offlineData = JSON.parse(offlineDataStr);
+                    
+                    // Display cached data
+                    if (offlineData.profile) {
+                        displayCachedProfile(offlineData.profile);
+                    }
+                    
+                    if (offlineData.records) {
+                        displayCachedRecords(offlineData.records);
+                    }
+                    
+                    showToast('📱 Offline data loaded', 'info');
+                    console.log('📱 Loaded data from offline cache');
+                } else {
+                    console.log('❌ No offline data available');
+                }
+            } catch (error) {
+                console.error('❌ Error loading offline data:', error);
+            }
+        }
+        
+        // Display cached profile data
+        function displayCachedProfile(profile) {
+            if (profile && profile.name) {
+                toggleProfileMode(false);
+                
+                if (profile.photo) {
+                    document.getElementById('profilePhotoDisplay').style.display = 'block';
+                    document.getElementById('displayPhoto').src = profile.photo;
+                } else {
+                    document.getElementById('profilePhotoDisplay').style.display = 'none';
+                }
+                
+                const profileDetailsHtml = `
+                    <div style="margin-bottom: 6px;"><strong>SN:</strong> ${profile.serviceNumber || 'N/A'}</div>
+                    <div style="margin-bottom: 6px;"><strong>Rank:</strong> ${profile.rank || 'N/A'}</div>
+                    <div style="margin-bottom: 6px;"><strong>Name:</strong> ${profile.name}</div>
+                    <div style="margin-bottom: 6px;"><strong>Unit:</strong> ${profile.unit || 'N/A'}</div>
+                    <div style="color: #64748b; font-size: 0.7rem;">
+                        📱 Offline Mode - Last sync: ${profile.timestamp ? new Date(profile.timestamp).toLocaleString() : 'Unknown'}
+                    </div>
+                `;
+                
+                document.getElementById('profileDetails').innerHTML = profileDetailsHtml;
+            }
+        }
+        
+        // Display cached records data
+        function displayCachedRecords(records) {
+            const container = document.getElementById('recordsContainer');
+            
+            if (records.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📊</div>
+                        <div>No test records found</div>
+                        <div style="font-size: 0.8rem; margin-top: 6px; opacity: 0.7;">
+                            📱 Offline Mode - Add tests when online
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group by year
+            const recordsByYear = {};
+            records.forEach(record => {
+                if (!recordsByYear[record.year]) {
+                    recordsByYear[record.year] = [];
+                }
+                recordsByYear[record.year].push(record);
+            });
+            
+            let html = '<div style="background: rgba(255, 215, 0, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #FFD700; font-size: 0.8rem; font-weight: 600;">📱 OFFLINE MODE - Data from cache</div>';
+            const sortedYears = Object.keys(recordsByYear).sort((a, b) => b - a);
+            
+            sortedYears.forEach(year => {
+                const yearRecords = recordsByYear[year];
+                const yearStatus = calculateYearlyStatus(yearRecords);
+                const meritRecords = yearRecords.filter(r => r.evaluation.meritEligible);
+                
+                html += `
+                    <div class="year-summary">
+                        <div class="status-badge ${yearStatus}">${yearStatus.toUpperCase()}</div>
+                        <h3>${year} Summary</h3>
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <strong>Tests</strong><br>
+                                ${yearRecords.length}/2
+                            </div>
+                            <div class="stat-item">
+                                <strong>Status</strong><br>
+                                ${yearStatus.toUpperCase()}
+                            </div>
+                            <div class="stat-item">
+                                <strong>Merit</strong><br>
+                                ${meritRecords.length}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                yearRecords.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(record => {
+                    const statusClass = record.evaluation.meritEligible ? 'merit' : (record.evaluation.overallPass ? 'pass' : 'fail');
+                    const statusText = record.evaluation.meritEligible ? 'MERIT' : (record.evaluation.overallPass ? 'PASS' : 'FAIL');
+                    
+                    html += `
+                        <div class="test-record ${statusClass}">
+                            <div class="status-badge ${statusClass}">${statusText}</div>
+                            <h4 style="color: #4ade80; margin-bottom: 10px; padding-right: 60px; font-size: 1rem;">
+                                ${new Date(record.date).toLocaleDateString()}<br>
+                                <small style="color: #86efac; font-size: 0.8rem;">Age: ${record.age}, Category: ${record.evaluation.category}</small>
+                            </h4>
+                            <div class="test-details">
+                                <div class="test-detail ${record.evaluation.passes.pushUps ? '' : 'fail-event'}">
+                                    <strong>Push-ups:</strong> ${record.pushUps}<br>
+                                    <strong>Score:</strong> ${record.evaluation.scores.pushUps}/100<br>
+                                    <strong>Status:</strong> ${record.evaluation.passes.pushUps ? 'PASS' : 'FAIL'}
+                                </div>
+                                <div class="test-detail ${record.evaluation.passes.sitUps ? '' : 'fail-event'}">
+                                    <strong>Sit-ups:</strong> ${record.sitUps}<br>
+                                    <strong>Score:</strong> ${record.evaluation.scores.sitUps}/100<br>
+                                    <strong>Status:</strong> ${record.evaluation.passes.sitUps ? 'PASS' : 'FAIL'}
+                                </div>
+                                <div class="test-detail ${record.evaluation.passes.run ? '' : 'fail-event'}">
+                                    <strong>Run:</strong> ${record.runTimeDisplay}<br>
+                                    <strong>Score:</strong> ${record.evaluation.scores.run}/100<br>
+                                    <strong>Status:</strong> ${record.evaluation.passes.run ? 'PASS' : 'FAIL'}
+                                </div>
+                                <div class="test-detail">
+                                    <strong>Total:</strong> ${record.evaluation.totalScore}/300<br>
+                                    <strong>Overall:</strong> ${record.evaluation.overallPass ? 'PASS' : 'FAIL'}<br>
+                                    ${record.evaluation.meritEligible ? '<strong style="color: #ffd700;">⭐ MERIT</strong>' : ''}
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px; padding: 8px; background: rgba(255, 215, 0, 0.1); border-radius: 6px; font-size: 0.75rem; color: #FFD700; text-align: center;">
+                                📱 Offline Mode - Connect to internet to modify
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Photo Functions
+        function handlePhotoUpload() {
+            const fileInput = document.getElementById('profilePhoto');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Photo size must be less than 5MB');
+                    fileInput.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoPreview = document.getElementById('photoPreview');
+                    const previewImage = document.getElementById('previewImage');
+                    const placeholder = document.getElementById('noPhotoPlaceholder');
+                    
+                    previewImage.src = e.target.result;
+                    photoPreview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removePhoto() {
+            document.getElementById('profilePhoto').value = '';
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('noPhotoPlaceholder').style.display = 'flex';
+            document.getElementById('previewImage').src = '';
+        }
+
+        // Profile Functions
+        async function saveProfile() {
+            if (!currentUser) return;
+            
+            const profile = {
+                serviceNumber: document.getElementById('serviceNumber').value,
+                rank: document.getElementById('rank').value,
+                name: document.getElementById('name').value,
+                unit: document.getElementById('unit').value,
+                timestamp: Date.now()
+            };
+            
+            const previewImage = document.getElementById('previewImage');
+            if (previewImage.src && previewImage.src !== window.location.href) {
+                profile.photo = previewImage.src;
+            }
+            
+            try {
+                await database.saveProfile(profile);
+                displayProfile();
+                toggleProfileMode(false);
+                showToast('Profile saved successfully!', 'success');
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                showToast('Error saving profile. Please try again.', 'error');
+            }
+        }
+
+        function editProfile() {
+            toggleProfileMode(true);
+        }
+
+        function toggleProfileMode(isEditing) {
+            const profileForm = document.getElementById('profileForm');
+            const photoSection = document.querySelector('.profile-photo-section');
+            const profileDisplay = document.getElementById('profileDisplay');
+            
+            if (isEditing) {
+                profileForm.style.display = 'block';
+                photoSection.style.display = 'block';
+                profileDisplay.style.display = 'none';
+            } else {
+                profileForm.style.display = 'none';
+                photoSection.style.display = 'none';
+                profileDisplay.style.display = 'block';
+            }
+        }
+
+        async function clearProfile() {
+            if (!currentUser) return;
+            
+            if (confirm('Are you sure you want to delete your profile?')) {
+                try {
+                    await database.deleteProfile(currentUser.serviceNumber);
+                    document.getElementById('profileDisplay').style.display = 'none';
+                    document.getElementById('profilePhotoDisplay').style.display = 'none';
+                    document.getElementById('serviceNumber').value = '';
+                    document.getElementById('rank').value = '';
+                    document.getElementById('name').value = '';
+                    document.getElementById('unit').value = '';
+                    document.getElementById('photoPreview').style.display = 'none';
+                    document.getElementById('noPhotoPlaceholder').style.display = 'flex';
+                    document.getElementById('profilePhoto').value = '';
+                    document.getElementById('previewImage').src = '';
+                    
+                    toggleProfileMode(true);
+                    showToast('Profile cleared successfully!', 'success');
+                } catch (error) {
+                    console.error('Error clearing profile:', error);
+                    showToast('Error clearing profile. Please try again.', 'error');
+                }
+            }
+        }
+
+        async function displayProfile() {
+            if (!currentUser) return;
+            
+            try {
+                const profile = await database.getProfile(currentUser.serviceNumber);
+                
+                if (profile && profile.name) {
+                    toggleProfileMode(false);
+                    
+                    if (profile.photo) {
+                        document.getElementById('profilePhotoDisplay').style.display = 'block';
+                        document.getElementById('displayPhoto').src = profile.photo;
+                        document.getElementById('previewImage').src = profile.photo;
+                        document.getElementById('photoPreview').style.display = 'block';
+                        document.getElementById('noPhotoPlaceholder').style.display = 'none';
+                    } else {
+                        document.getElementById('profilePhotoDisplay').style.display = 'none';
+                        document.getElementById('photoPreview').style.display = 'none';
+                        document.getElementById('noPhotoPlaceholder').style.display = 'flex';
+                    }
+                    
+                    const profileDetailsHtml = `
+                        <div style="margin-bottom: 6px;"><strong>SN:</strong> ${profile.serviceNumber || 'N/A'}</div>
+                        <div style="margin-bottom: 6px;"><strong>Rank:</strong> ${profile.rank || 'N/A'}</div>
+                        <div style="margin-bottom: 6px;"><strong>Name:</strong> ${profile.name}</div>
+                        <div style="margin-bottom: 6px;"><strong>Unit:</strong> ${profile.unit || 'N/A'}</div>
+                        <div style="color: #64748b; font-size: 0.7rem;">
+                            Saved: ${profile.timestamp ? new Date(profile.timestamp).toLocaleString() : 'Unknown'}
+                        </div>
+                    `;
+                    
+                    document.getElementById('profileDetails').innerHTML = profileDetailsHtml;
+                    
+                    // Populate form fields
+                    document.getElementById('serviceNumber').value = profile.serviceNumber || '';
+                    document.getElementById('rank').value = profile.rank || '';
+                    document.getElementById('name').value = profile.name || '';
+                    document.getElementById('unit').value = profile.unit || '';
+                } else {
+                    toggleProfileMode(true);
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                toggleProfileMode(true);
+            }
+        }
+
+        // Test Functions
+        async function addTestRecord() {
+            const testDate = document.getElementById('testDate').value;
+            const ageAtTest = parseInt(document.getElementById('ageAtTest').value);
+            const pushUps = parseInt(document.getElementById('pushUps').value);
+            const sitUps = parseInt(document.getElementById('sitUps').value);
+            const runMinutes = parseInt(document.getElementById('runMinutes').value);
+            const runSeconds = parseInt(document.getElementById('runSeconds').value);
+            
+            if (!testDate || !ageAtTest || isNaN(pushUps) || isNaN(sitUps) || isNaN(runMinutes) || isNaN(runSeconds)) {
+                showToast('Please fill in all fields correctly.', 'error');
+                return;
+            }
+            
+            const runTime = timeToSeconds(runMinutes, runSeconds);
+            const evaluation = evaluateTest(ageAtTest, pushUps, sitUps, runTime);
+            
+            const record = {
+                serviceNumber: currentUser.serviceNumber,
+                date: testDate,
+                year: new Date(testDate).getFullYear(),
+                age: ageAtTest,
+                pushUps,
+                sitUps,
+                runTime,
+                runTimeDisplay: `${runMinutes}:${runSeconds.toString().padStart(2, '0')}`,
+                evaluation,
+                timestamp: Date.now()
+            };
+            
+            try {
+                await database.saveRecord(record);
+                
+                // Clear form
+                document.getElementById('testDate').value = '';
+                document.getElementById('ageAtTest').value = '';
+                document.getElementById('pushUps').value = '';
+                document.getElementById('sitUps').value = '';
+                document.getElementById('runMinutes').value = '';
+                document.getElementById('runSeconds').value = '';
+                document.getElementById('calculatorDisplay').style.display = 'none';
+                
+                showToast('Test record added successfully!', 'success');
+                
+                // Refresh records display
+                displayRecords();
+                updateYearFilter();
+            } catch (error) {
+                console.error('Error saving record:', error);
+                showToast('Error saving test record. Please try again.', 'error');
+            }
+        }
+
+        function updateCalculations() {
+            const age = parseInt(document.getElementById('ageAtTest').value);
+            const pushUps = parseInt(document.getElementById('pushUps').value) || 0;
+            const sitUps = parseInt(document.getElementById('sitUps').value) || 0;
+            const runMinutes = parseInt(document.getElementById('runMinutes').value) || 0;
+            const runSeconds = parseInt(document.getElementById('runSeconds').value) || 0;
+            
+            const calculatorDisplay = document.getElementById('calculatorDisplay');
+            
+            if (!age || age < 17 || age > 65) {
+                calculatorDisplay.style.display = 'none';
+                return;
+            }
+            
+            calculatorDisplay.style.display = 'block';
+            
+            const category = getAgeCategory(age);
+            const standards = BFT_STANDARDS[category];
+            const runTime = timeToSeconds(runMinutes, runSeconds);
+            const evaluation = evaluateTest(age, pushUps, sitUps, runTime);
+            
+            // Display current scores
+            let currentScoresHtml = '';
+            
+            // Push-ups
+            let pushUpClass = 'no-entry';
+            if (pushUps > 0) {
+                if (pushUps >= standards.pushUps.max) {
+                    pushUpClass = 'merit';
+                } else if (evaluation.passes.pushUps) {
+                    pushUpClass = 'pass';
+                } else {
+                    pushUpClass = 'fail';
+                }
+            }
+            currentScoresHtml += `
+                <div class="score-item ${pushUpClass}">
+                    <strong>PUSH-UPS</strong><br>
+                    ${pushUps || 'No Entry'}<br>
+                    ${pushUps > 0 ? evaluation.scores.pushUps + '/100' : 'N/A'}
+                </div>
+            `;
+            
+            // Sit-ups
+            let sitUpClass = 'no-entry';
+            if (sitUps > 0) {
+                if (sitUps >= standards.sitUps.max) {
+                    sitUpClass = 'merit';
+                } else if (evaluation.passes.sitUps) {
+                    sitUpClass = 'pass';
+                } else {
+                    sitUpClass = 'fail';
+                }
+            }
+            currentScoresHtml += `
+                <div class="score-item ${sitUpClass}">
+                    <strong>SIT-UPS</strong><br>
+                    ${sitUps || 'No Entry'}<br>
+                    ${sitUps > 0 ? evaluation.scores.sitUps + '/100' : 'N/A'}
+                </div>
+            `;
+            
+            // Running
+            let runClass = 'no-entry';
+            const runDisplay = runTime > 0 ? `${runMinutes}:${runSeconds.toString().padStart(2, '0')}` : 'No Entry';
+            if (runTime > 0) {
+                if (runTime <= standards.run.max) {
+                    runClass = 'merit';
+                } else if (evaluation.passes.run) {
+                    runClass = 'pass';
+                } else {
+                    runClass = 'fail';
+                }
+            }
+            currentScoresHtml += `
+                <div class="score-item ${runClass}">
+                    <strong>RUN TIME</strong><br>
+                    ${runDisplay}<br>
+                    ${runTime > 0 ? evaluation.scores.run + '/100' : 'N/A'}
+                </div>
+            `;
+            
+            // Overall
+            let overallClass = 'no-entry';
+            let overallStatus = 'No Entry';
+            if (pushUps > 0 && sitUps > 0 && runTime > 0) {
+                if (evaluation.meritEligible) {
+                    overallClass = 'merit';
+                    overallStatus = 'MERIT';
+                } else if (evaluation.overallPass) {
+                    overallClass = 'pass';
+                    overallStatus = 'PASS';
+                } else {
+                    overallClass = 'fail';
+                    overallStatus = 'FAIL';
+                }
+            }
+            currentScoresHtml += `
+                <div class="score-item ${overallClass}">
+                    <strong>OVERALL</strong><br>
+                    ${overallStatus}<br>
+                    ${(pushUps > 0 && sitUps > 0 && runTime > 0) ? evaluation.totalScore + '/300' : 'N/A'}
+                </div>
+            `;
+            
+            document.getElementById('currentScores').innerHTML = currentScoresHtml;
+            
+            // Display requirements
+            const passRunTime = secondsToTime(standards.run.pass);
+            const meritRunTime = secondsToTime(standards.run.max);
+            
+            const requirementsHtml = `
+                <div class="req-section">
+                    <h4>🎯 Requirements (${category})</h4>
+                    <div class="req-grid">
+                        <div class="req-item">
+                            <strong>PASS:</strong> Push-ups ${standards.pushUps.min}+, Sit-ups ${standards.sitUps.min}+, Run ${passRunTime}
+                        </div>
+                        <div class="req-item">
+                            <strong>MERIT:</strong> Push-ups ${standards.pushUps.max}+, Sit-ups ${standards.sitUps.max}+, Run ${meritRunTime}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('requirements').innerHTML = requirementsHtml;
+        }
+
+        // Records Functions
+        async function displayRecords() {
+            if (!currentUser) return;
+            
+            try {
+                const records = await database.getRecords(currentUser.serviceNumber);
+                const container = document.getElementById('recordsContainer');
+                const yearFilter = document.getElementById('yearFilter').value;
+                
+                let filteredRecords = records;
+                if (yearFilter) {
+                    filteredRecords = records.filter(record => record.year.toString() === yearFilter);
+                }
+                
+                if (filteredRecords.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <div>No test records found</div>
+                            <div style="font-size: 0.8rem; margin-top: 6px; opacity: 0.7;">
+                                Add your first BFT test in the New Test tab
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Group by year
+                const recordsByYear = {};
+                filteredRecords.forEach(record => {
+                    if (!recordsByYear[record.year]) {
+                        recordsByYear[record.year] = [];
+                    }
+                    recordsByYear[record.year].push(record);
+                });
+                
+                let html = '';
+                const sortedYears = Object.keys(recordsByYear).sort((a, b) => b - a);
+                
+                sortedYears.forEach(year => {
+                    const yearRecords = recordsByYear[year];
+                    const yearStatus = calculateYearlyStatus(yearRecords);
+                    const meritRecords = yearRecords.filter(r => r.evaluation.meritEligible);
+                    
+                    html += `
+                        <div class="year-summary">
+                            <div class="status-badge ${yearStatus}">${yearStatus.toUpperCase()}</div>
+                            <h3>${year} Summary</h3>
+                            <div class="summary-stats">
+                                <div class="stat-item">
+                                    <strong>Tests</strong><br>
+                                    ${yearRecords.length}/2
+                                </div>
+                                <div class="stat-item">
+                                    <strong>Status</strong><br>
+                                    ${yearStatus.toUpperCase()}
+                                </div>
+                                <div class="stat-item">
+                                    <strong>Merit</strong><br>
+                                    ${meritRecords.length}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    yearRecords.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(record => {
+                        const statusClass = record.evaluation.meritEligible ? 'merit' : (record.evaluation.overallPass ? 'pass' : 'fail');
+                        const statusText = record.evaluation.meritEligible ? 'MERIT' : (record.evaluation.overallPass ? 'PASS' : 'FAIL');
+                        
+                        html += `
+                            <div class="test-record ${statusClass}">
+                                <div class="status-badge ${statusClass}">${statusText}</div>
+                                <h4 style="color: #4ade80; margin-bottom: 10px; padding-right: 60px; font-size: 1rem;">
+                                    ${new Date(record.date).toLocaleDateString()}<br>
+                                    <small style="color: #86efac; font-size: 0.8rem;">Age: ${record.age}, Category: ${record.evaluation.category}</small>
+                                </h4>
+                                <div class="test-details">
+                                    <div class="test-detail ${record.evaluation.passes.pushUps ? '' : 'fail-event'}">
+                                        <strong>Push-ups:</strong> ${record.pushUps}<br>
+                                        <strong>Score:</strong> ${record.evaluation.scores.pushUps}/100<br>
+                                        <strong>Status:</strong> ${record.evaluation.passes.pushUps ? 'PASS' : 'FAIL'}
+                                    </div>
+                                    <div class="test-detail ${record.evaluation.passes.sitUps ? '' : 'fail-event'}">
+                                        <strong>Sit-ups:</strong> ${record.sitUps}<br>
+                                        <strong>Score:</strong> ${record.evaluation.scores.sitUps}/100<br>
+                                        <strong>Status:</strong> ${record.evaluation.passes.sitUps ? 'PASS' : 'FAIL'}
+                                    </div>
+                                    <div class="test-detail ${record.evaluation.passes.run ? '' : 'fail-event'}">
+                                        <strong>Run:</strong> ${record.runTimeDisplay}<br>
+                                        <strong>Score:</strong> ${record.evaluation.scores.run}/100<br>
+                                        <strong>Status:</strong> ${record.evaluation.passes.run ? 'PASS' : 'FAIL'}
+                                    </div>
+                                    <div class="test-detail">
+                                        <strong>Total:</strong> ${record.evaluation.totalScore}/300<br>
+                                        <strong>Overall:</strong> ${record.evaluation.overallPass ? 'PASS' : 'FAIL'}<br>
+                                        ${record.evaluation.meritEligible ? '<strong style="color: #ffd700;">⭐ MERIT</strong>' : ''}
+                                    </div>
+                                </div>
+                                <button class="mobile-btn danger small" onclick="deleteRecord(${record.id})">
+                                    🗑️ Delete
+                                </button>
+                            </div>
+                        `;
+                    });
+                });
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading records:', error);
+                document.getElementById('recordsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <div>Error loading records</div>
+                        <div style="font-size: 0.8rem; margin-top: 6px; opacity: 0.7;">
+                            Please try refreshing the page
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function calculateYearlyStatus(yearRecords) {
+            const hasFailure = yearRecords.some(record => !record.evaluation.overallPass);
+            const hasMerit = yearRecords.some(record => record.evaluation.meritEligible);
+            
+            if (hasFailure) return 'fail';
+            if (hasMerit) return 'merit';
+            return 'pass';
+        }
+
+        async function deleteRecord(id) {
+            if (!currentUser) return;
+            
+            if (confirm('Delete this test record?')) {
+                try {
+                    await database.deleteRecord(id);
+                    displayRecords();
+                    updateYearFilter();
+                    showToast('Record deleted', 'success');
+                } catch (error) {
+                    console.error('Error deleting record:', error);
+                    showToast('Error deleting record. Please try again.', 'error');
+                }
+            }
+        }
+
+        async function clearAllRecords() {
+            if (!currentUser) return;
+            
+            if (confirm('Delete ALL test records? This cannot be undone.')) {
+                try {
+                    await database.deleteAllRecords(currentUser.serviceNumber);
+                    displayRecords();
+                    updateYearFilter();
+                    showToast('All records cleared', 'success');
+                } catch (error) {
+                    console.error('Error clearing records:', error);
+                    showToast('Error clearing records. Please try again.', 'error');
+                }
+            }
+        }
+
+        async function updateYearFilter() {
+            if (!currentUser) return;
+            
+            try {
+                const records = await database.getRecords(currentUser.serviceNumber);
+                const years = [...new Set(records.map(record => record.year))].sort((a, b) => b - a);
+                
+                const yearFilter = document.getElementById('yearFilter');
+                const currentValue = yearFilter.value;
+                
+                yearFilter.innerHTML = '<option value="">All Years</option>';
+                years.forEach(year => {
+                    yearFilter.innerHTML += `<option value="${year}">${year}</option>`;
+                });
+                
+                yearFilter.value = currentValue;
+            } catch (error) {
+                console.error('Error updating year filter:', error);
+            }
+        }
+
+        function filterRecords() {
+            displayRecords();
+        }
+
+        async function exportData() {
+            if (!currentUser) return;
+            
+            try {
+                const records = await database.getRecords(currentUser.serviceNumber);
+                const profile = await database.getProfile(currentUser.serviceNumber);
+                
+                if (records.length === 0) {
+                    showToast('No records to export', 'error');
+                    return;
+                }
+                
+                let csv = 'Date,Year,Age,Category,Push-ups,Push-up Score,Push-up Status,Sit-ups,Sit-up Score,Sit-up Status,Run Time,Run Score,Run Status,Total Score,Overall Status,Merit\n';
+                
+                records.forEach(record => {
+                    csv += `${record.date},${record.year},${record.age},${record.evaluation.category},${record.pushUps},${record.evaluation.scores.pushUps},${record.evaluation.passes.pushUps ? 'PASS' : 'FAIL'},${record.sitUps},${record.evaluation.scores.sitUps},${record.evaluation.passes.sitUps ? 'PASS' : 'FAIL'},${record.runTimeDisplay},${record.evaluation.scores.run},${record.evaluation.passes.run ? 'PASS' : 'FAIL'},${record.evaluation.totalScore},${record.evaluation.overallPass ? 'PASS' : 'FAIL'},${record.evaluation.meritEligible ? 'YES' : 'NO'}\n`;
+                });
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `BFT_Records_${profile?.name || 'User'}_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                showToast('Data exported successfully', 'success');
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showToast('Error exporting data. Please try again.', 'error');
+            }
+        }
+
+        // Settings Functions
+        async function updateAppStats() {
+            if (!currentUser) return;
+            
+            try {
+                const records = await database.getRecords(currentUser.serviceNumber);
+                const totalTests = records.length;
+                const passedTests = records.filter(r => r.evaluation.overallPass).length;
+                const meritTests = records.filter(r => r.evaluation.meritEligible).length;
+                const passRate = totalTests > 0 ? Math.round((passedTests / totalTests) * 100) : 0;
+                
+                // Update stats if elements exist
+                const totalTestsEl = document.getElementById('totalTests');
+                const passRateEl = document.getElementById('passRate');
+                const meritTestsEl = document.getElementById('meritTests');
+                
+                if (totalTestsEl) totalTestsEl.textContent = totalTests;
+                if (passRateEl) passRateEl.textContent = passRate + '%';
+                if (meritTestsEl) meritTestsEl.textContent = meritTests;
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        function showAbout() {
+            alert(`BFT Tracker v1.0\n\nMilitary Basic Fitness Test Performance Management System\n\nDesigned by: LCPL Ahmed Nabeel\n© 2025 All Rights Reserved MCTS\n\nFeatures:\n• Profile Management\n• Test Recording\n• Performance Tracking\n• Offline Support\n• Data Export`);
+        }
+
+        async function clearAllData() {
+            if (confirm('Delete ALL data including profile and records? This cannot be undone.')) {
+                try {
+                    await database.clearAllData();
+                    localStorage.clear();
+                    location.reload();
+                } catch (error) {
+                    console.error('Error clearing all data:', error);
+                    showToast('Error clearing data. Please try again.', 'error');
+                }
+            }
+        }
+
+        // PWA Functions
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast('App installed successfully!', 'success');
+                        document.getElementById('installBtn').style.display = 'none';
+                        dismissInstallPrompt();
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        function dismissInstallPrompt() {
+            document.getElementById('installPrompt').style.display = 'none';
+            localStorage.setItem('installPromptDismissed', Date.now());
+        }
+
+        // Utility Functions
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                padding: 10px 16px;
+                border-radius: 8px;
+                font-weight: 500;
+                font-size: 0.875rem;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                animation: slideDown 0.3s ease;
+                max-width: 90%;
+                text-align: center;
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize App
+        async function initializeApp() {
+            console.log('🚀 Initializing mobile app...');
+            
+            try {
+                // Initialize database first
+                await database.init();
+                console.log('✅ Database initialized successfully');
+                
+                // Update database status
+                const dbStatusEl = document.getElementById('dbStatus');
+                if (dbStatusEl) {
+                    dbStatusEl.innerHTML = '🗄️ Database: Connected & Ready';
+                    dbStatusEl.style.background = 'rgba(16, 185, 129, 0.15)';
+                    dbStatusEl.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+                }
+                
+                // Check authentication
+                if (!checkAuthentication()) {
+                    console.log('👤 User not authenticated, showing login screen');
+                    return;
+                }
+                
+                // Set today's date as default
+                document.getElementById('testDate').value = new Date().toISOString().split('T')[0];
+                
+                // Show install prompt if not dismissed recently
+                const lastDismissed = localStorage.getItem('installPromptDismissed');
+                const daysSinceDismissed = lastDismissed ? (Date.now() - parseInt(lastDismissed)) / (1000 * 60 * 60 * 24) : 999;
+                
+                if (daysSinceDismissed > 7) {
+                    setTimeout(() => {
+                        if (deferredPrompt) {
+                            document.getElementById('installPrompt').style.display = 'block';
+                        }
+                    }, 3000);
+                }
+                
+                console.log('✅ Mobile app initialized successfully');
+            } catch (error) {
+                console.error('❌ Failed to initialize app:', error);
+                
+                // Update database status to show error
+                const dbStatusEl = document.getElementById('dbStatus');
+                if (dbStatusEl) {
+                    dbStatusEl.innerHTML = '❌ Database: Connection Failed';
+                    dbStatusEl.style.background = 'rgba(239, 68, 68, 0.15)';
+                    dbStatusEl.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                    dbStatusEl.style.color = '#ef4444';
+                }
+                
+                showToast('Error initializing app. Please refresh the page.', 'error');
+            }
+        }
+
+        // Event Listeners
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                const swCode = `
+                    const CACHE_NAME = 'bft-tracker-mobile-v1';
+                    const urlsToCache = [
+                        './',
+                        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
+                    ];
+
+                    self.addEventListener('install', function(event) {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(function(cache) {
+                                    return cache.addAll(urlsToCache);
+                                })
+                        );
+                    });
+
+                    self.addEventListener('fetch', function(event) {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(function(response) {
+                                    return response || fetch(event.request);
+                                }
+                            )
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then(function(registration) {
+                        console.log('ServiceWorker registered successfully');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+        // Online/Offline Status
+        function updateOnlineStatus() {
+            const existingIndicator = document.querySelector('.offline-indicator');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+            
+            if (!navigator.onLine) {
+                const indicator = document.createElement('div');
+                indicator.className = 'offline-indicator';
+                indicator.textContent = '📱 Offline Mode';
+                document.body.appendChild(indicator);
+            }
+        }
+        
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        // Enhanced data loading for mobile
+        function loadAllDataWithRetry(attempt = 1, maxAttempts = 3) {
+            console.log(`🔄 Loading data attempt ${attempt}/${maxAttempts}...`);
+            
+            setTimeout(() => {
+                try {
+                    displayProfile();
+                    displayRecords();
+                    updateYearFilter();
+                    updateAppStats();
+                    console.log('✅ Data loading completed');
+                } catch (e) {
+                    console.error('❌ Data loading failed:', e);
+                    if (attempt < maxAttempts) {
+                        setTimeout(() => loadAllDataWithRetry(attempt + 1, maxAttempts), 500);
+                    }
+                }
+            }, 100 * attempt);
+        }
+
+        // Initialize on various events
+        document.addEventListener('DOMContentLoaded', initializeApp);
+        window.addEventListener('load', initializeApp);
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                loadAllDataWithRetry();
+            }
+        });
+        
+        // Handle visibility changes for PWA
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                if (currentUser) {
+                    loadAllDataWithRetry();
+                }
+            }
+        });
+
+        // Add keyboard support for login forms
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const loginForm = document.getElementById('loginForm');
+                const signupForm = document.getElementById('signupForm');
+                
+                if (loginForm.style.display !== 'none') {
+                    login();
+                } else if (signupForm.style.display !== 'none') {
+                    signup();
+                }
+            }
+        });
+
+        updateOnlineStatus();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9811354a6470483e',t:'MTc1ODIwMjMzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
 
