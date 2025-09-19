@@ -23,3 +23,4 @@ A mobile-friendly, offline-capable app for recording and managing Basic Fitness 
 ## License
 
 All rights reserved MCTS 2025
+ 
